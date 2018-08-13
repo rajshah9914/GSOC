@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+<script>
+    document.getElementById("predict").className="active";
+</script>
+
+<div class="container">
+
+    <h3>Predicting drug response with trained deep learning model</h3>
+        <p>1.Upload individual mutation profile in csv format or use example files
+            (The gene mutation status order should be the same as example. <br/>See example data file for more details).</p>
+        <p>2.Select a drug click the predict button to get predicted IC50 value.</p>
+        <p>&nbsp;</p>
+
+  <form class="form-horizontal" role="form" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+       <div class="form-group">
+           <div class="row">
+                <label class="col-sm-2 control-label">Mutation Profile</label>
+               <div class="col-sm-10">
+                <input type="file" name="mutation" class="form-control-file">
+               </div>
+           </div>
+           <div class="col-sm-offset-2 col-sm-4">
+                <button type="submit" class="btn btn-info">Upload</button>
+                <a href="/DNN/predict/?file=example" class="btn btn-warning">Use Example File</a>
+           </div>
+       </div>
+  </form>
+
+  {% if uploaded_status %}
+      <div class="alert alert-success" role="alert">
+        File Uploaded!</a>
+      </div>
+  {% endif %}
+
+  {% if example_mut_file_url %}
+      <div class="alert alert-success" role="alert">
+        Using example mutation profile: <a href="{{ example_mut_file_url }}">mutation_example.csv</a>
+      </div>
+  {% endif %}
+
+  <form class="form-horizontal" role="form" action="/DNN/predict/" method="get">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Drug</label>
+            <div class="col-sm-4">
+                <select class="form-control" id="drug" name="drug">
+                    {% for i in drugs %}
+                        <option value={{ i }}>{{ i }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+            <div class="form-group">
+                <div class="row col-sm-offset-2 col-sm-4">
+                    <button type="submit" class="btn btn-success">Predict</button>
+                </div>
+            </div>
+  </form>
+
+  {% if IC50 %}
+      <div class="alert alert-success" role="alert">
+        Predicted IC50 for {{ selected_drug }} is {{ IC50 }}
+      </div>
+  {% endif %}
+
+
+</div>
+
+{% endblock %}

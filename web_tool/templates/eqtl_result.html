@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+<script>
+    document.getElementById("eqtl").className="active";
+</script>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+                <ul class="pagination">
+                    {% if eqtls.has_previous %}
+                        <li><a href="./?cancertype={{ cancertype }}&gene={{ gene }}&page={{ eqtls.previous_page_number }}">&laquo;</a></li>
+                    {% endif %}
+                    {% for num in eqtls.paginator.page_range %}
+                        {% ifequal num eqtls.number %}
+                            <li class="active"><a href="./?cancertype={{ cancertype }}&gene={{ gene }}&page={{ num }}">{{ num }}</a></li>
+                        {% else %}
+                             <li><a href="./?cancertype={{ cancertype }}&gene={{ gene }}&page={{ num }}">{{ num }}</a></li>
+                        {% endifequal %}
+                    {% endfor %}
+                    {% if eqtls.has_next %}
+                         <li><a href="./?cancertype={{ cancertype }}&gene={{ gene }}&page={{ eqtls.next_page_number }}">&raquo;</a></li>
+                    {% endif %}
+                 </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <table class="table table-striped">
+                <tr>
+                    <th>Cancer Type</th>
+                    <th>SNP ID</th>
+                    <th>SNP chromosome</th>
+                    <th>SNP position(hg19)</th>
+                    <th>Alleles</th>
+                    <th>Gene symbol</th>
+                    <th>Gene position(hg19)</th>
+                   </tr>
+	            {% for i in eqtls %}
+                <tr>
+                    <td>{{ i.cancer_type }}</td>
+                    <td>{{ i.eqtls }}</td>
+                    <td>{{  i.snp_chr }}</td>
+                    <td>{{ i.snp_position }}</td>
+                    <td>{{ i.snp_alleles }}</td>
+                    <td>{{ i.egenes }}</td>
+                    <td>{{ i.gene_position }}</td>
+                </tr>
+	            {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

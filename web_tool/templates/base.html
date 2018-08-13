@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+	<title>Cancer eQTLs</title>
+</head>
+<body style="margin:0; padding: 50px;">
+<div class="container">
+    {% load static %}
+    <img src="{% static "img/Banner.jpg" %}" height="50%" />
+    <nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="/gene/">Home</a>
+    </div>
+    <div>
+        <ul class="nav navbar-nav">
+            <li id="eqtl"><a href="/gene/">Cis-eQTLs</a></li>
+            <!-- <li id="gene"><a href="/gene/gene_list/">Gene</a></li> -->
+            <li id="drug"><a href="/gene/drug/">Drug</a></li>
+            <li id="model"><a href="/model/upload/">Model Training</a></li>
+            <li id="predict"><a href="/DNN/predict/">DNN Prediction</a></li>
+        </ul>
+    </div>
+    </div>
+    </nav>
+</div>
+	{% block content %}
+
+    {% endblock %}
+</body>
+</html>

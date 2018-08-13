@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<script>
+    document.getElementById("gene").className="active";
+</script>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <table class="table table-striped">
+                <tr>
+                    <th>Drug name</th>
+                    <th>Synonyms</th>
+                    <th>Targets</th>
+                    <th>Target pathway</th>
+                   </tr>
+	            {% for i in drugs %}
+                <tr>
+                    <td>{{ i.name }}</td>
+                    <td>{{ i.synonyms }}</td>
+                    <td>{{  i.targets }}</td>
+                    <td>{{ i.target_pathway }}</td>
+                </tr>
+	            {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

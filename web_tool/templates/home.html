@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <script>
+        document.getElementById("eqtl").className="active";
+    </script>
+    <div class="container">
+    <h3>Cis-eQTLs across different cancer types</h3>
+        <p>1.Enter a SNP ID for detailed information of eQTL-gene pair.</p>
+        <p>2.Enter a gene symbol(with specific cancer type) to find the corresponding eQTLs.</p>
+        <p>&nbsp;</p>
+
+    <form class="form-horizontal" role="form" action="./eqtl_result/" method="get">
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="gwas_tagsnp">Cancer type</label>
+            <div class="col-sm-4">
+                <select class="form-control" id="CancerType" name="cancertype">
+                    <option value="ALL">ALL</option>
+                    <option value="BRCA">BRCA</option>
+                    <option value="LUAD">LUAD</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">SNP ID</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" name="snpid" placeholder="">
+                    <span class="help-block">e.g., "rs2608828"</span>
+                </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Gene symbol</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" name="gene" placeholder="">
+                <span class="help-block">e.g., "ERAP2"</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-4">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </div>
+    </form>
+    </div>
+
+{% endblock %}

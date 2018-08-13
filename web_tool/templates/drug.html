@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block content %}
+<script>
+    document.getElementById("drug").className="active";
+</script>
+    <div class="container">
+    <h3>Cancer drug list</h3>
+        <p>1.Enter a name of drug for detailed information.</p>
+        <p>2.Enter a target gene to find the corresponding drugs.</p>
+        <p>&nbsp;</p>
+    <form class="form-horizontal" role="form" action="../drug_result/" method="get">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Drug name</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" name="name" placeholder="">
+                    <span class="help-block">e.g., "Erlotinib"</span>
+                </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Target gene</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" name="gene" placeholder="">
+                <span class="help-block">e.g., "EGFR"</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-4">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </div>
+    </form>
+    </div>
+
+    <div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+                <ul class="pagination">
+                    {% if list.has_previous %}
+                        <li><a href="./?page={{ list.previous_page_number }}">&laquo;</a></li>
+                    {% else %}
+                        <li class="disabled"><a href="#">&laquo;</a></li>
+                    {% endif %}
+                    {% for num in list.paginator.page_range %}
+                        {% ifequal num list.number %}
+                            <li class="active"><a href="./?page={{ num }}">{{ num }}</a></li>
+                        {% else %}
+                             <li><a href="./?page={{ num }}">{{ num }}</a></li>
+                        {% endifequal %}
+                    {% endfor %}
+                    {% if list.has_next %}
+                        <li><a href="./?page={{ eqtls.next_page_number }}">&raquo;</a></li>
+                    {% else %}
+                        <li class="disabled"><a href="#">&raquo;</a></li>
+                    {% endif %}
+                 </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <table class="table table-striped">
+                <tr>
+                    <th>Drug name</th>
+                    <th>Synonyms</th>
+                    <th>Targets</th>
+                    <th>Target pathway</th>
+                   </tr>
+	            {% for i in list %}
+                <tr>
+                    <td>{{ i.name }}</td>
+                    <td>{{ i.synonyms }}</td>
+                    <td>{{  i.targets }}</td>
+                    <td>{{ i.target_pathway }}</td>
+                </tr>
+	            {% endfor %}
+            </table>
+        </div>
+    </div>
+    </div>
+
+{% endblock %}
