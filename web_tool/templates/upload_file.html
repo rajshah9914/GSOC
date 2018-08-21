@@ -8,8 +8,11 @@
 <div class="container">
 
     <h3>Machine learning model for drug response prediction</h3>
-        <p>1.Upload training data matrix in csv format or use example files
-            (First column of the data matrix should be the cell-line index, First row of the data matrix should be header.<br/>See example data files for more details).</p>
+        <p>1.Upload training data matrix and label file in csv format or use example files
+            (First column of the data matrix should be the cell-line index, First row of the data matrix should be header.<br/>
+            Label file should contain two columns, first column is the cell line index(ID) and the second is label 0 or 1, e.g. sensitive vs resistant.
+            See example data files for more details).
+        </p>
         <p>2.Choose an algorithm with the number of dimension to perform dimension reduction(Must perform once).</p>
         <p>3.Choose a machine learning model to train and evaluate with selected metric, cross-validation will be performed.</p>
         <p>&nbsp;</p>

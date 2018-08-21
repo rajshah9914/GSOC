@@ -19,11 +19,14 @@ def DNN_predict(request):
     if request.method == 'GET' and 'file' in request.GET and request.GET['file'] == 'example':
         settings.EXP_FLAG_PREDICT = True
         settings.MUT_FILE_NAME_PREDICT = 'mutation_sample.csv'
-        example_mut_file_url = settings.MEDIA_ROOT + '\\' + settings.MUT_FILE_NAME_PREDICT
+        example_mut_file_url = settings.MEDIA_ROOT + '/' + settings.MUT_FILE_NAME_PREDICT
         return render(request, 'DNN_model_predict.html', {
             'example_mut_file_url': example_mut_file_url, 'drugs': drugs})
     if request.method == 'GET' and 'drug' in request.GET and request.GET['drug']:
-        IC50 = make_prediction(settings.MEDIA_ROOT + '\\' + settings.MUT_FILE_NAME_PREDICT, request.GET['drug'])
+        if request.GET['drug'] == 'all':
+            IC50 = make_prediction_all(settings.MEDIA_ROOT + '/' + settings.MUT_FILE_NAME_PREDICT)
+        else:
+            IC50 = make_prediction(settings.MEDIA_ROOT + '/' + settings.MUT_FILE_NAME_PREDICT, request.GET['drug'])
         return render(request, 'DNN_model_predict.html', {
             'IC50': IC50, 'drugs': drugs, 'selected_drug': request.GET['drug']})
     return render(request, 'DNN_model_predict.html', {'drugs': drugs})
@@ -43,8 +46,25 @@ def make_prediction(filename, drugname):
     #print(selected_drug)
 
     y_pre = settings.DL_MODEL.predict([np.atleast_3d(cell_matrix), np.atleast_3d(selected_drug)])
-    print('IC50:', y_pre[0][0])
+    #print('IC50:', y_pre[0][0])
 
-    return y_pre[0][0]
+    res = {drugname:y_pre[0][0]}
 
+    return res
 
+def make_prediction_all(filename):
+    cell_matrix = pd.read_csv(filename)
+
+    drug = pd.read_csv(settings.MEDIA_ROOT + '/' + 'drug_fingerprint_complete.csv')
+
+    drug_list = list(drug.loc[:, 'DRUG_NAME'])
+    num_of_drug = len(drug_list)
+    cell_matrix = pd.concat([cell_matrix] * num_of_drug)
+
+    drug = drug.iloc[:, 2:]
+
+    y_pre = settings.DL_MODEL.predict([np.atleast_3d(cell_matrix), np.atleast_3d(drug)])
+
+    res = {drug_list[i]: y_pre[i][0] for i in range(num_of_drug)}
+
+    return res

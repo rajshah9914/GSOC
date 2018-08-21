@@ -46,6 +46,7 @@
             <label class="col-sm-2 control-label">Drug</label>
             <div class="col-sm-4">
                 <select class="form-control" id="drug" name="drug">
+                    <option value="all">All</option>
                     {% for i in drugs %}
                         <option value={{ i }}>{{ i }}</option>
                     {% endfor %}
@@ -60,9 +61,22 @@
   </form>
 
   {% if IC50 %}
-      <div class="alert alert-success" role="alert">
-        Predicted IC50 for {{ selected_drug }} is {{ IC50 }}
-      </div>
+          <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+            <table class="table table-striped">
+                <tr>
+                    <th>Drug name</th>
+                    <th>Predicted IC50</th>
+                   </tr>
+              {% for key, value in IC50.items %}
+                <tr>
+                    <td>{{ key }}</td>
+                    <td>{{ value }}</td>
+                </tr>
+              {% endfor %}
+            </table>
+            </div>
+          </div>
   {% endif %}
 
 
